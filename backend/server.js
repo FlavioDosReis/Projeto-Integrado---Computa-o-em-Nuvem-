@@ -23,7 +23,7 @@ app.post('/clientes', (req, res) => {
 });
 
 // Para qualquer outra rota, enviar o index.html (SPA)
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
