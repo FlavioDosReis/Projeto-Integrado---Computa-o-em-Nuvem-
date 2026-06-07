@@ -6,7 +6,7 @@ const app = express();
 const port = 3000;
 
 // Configurar região AWS
-AWS.config.update({ region: 'us-east-1' }); // ajuste para sua região
+AWS.config.update({ region: 'us-east-1c' }); 
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
