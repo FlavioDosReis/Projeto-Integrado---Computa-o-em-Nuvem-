@@ -28,3 +28,35 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
 });
+
+const AWS = require('aws-sdk');
+
+// Configure a região (exemplo: us-east-1)
+AWS.config.update({ region: 'us-east-1' });
+
+const dynamodb = new AWS.DynamoDB.DocumentClient();
+
+app.post('/clientes', (req, res) => {
+  const { nome, cpf } = req.body;
+
+  if (!nome || !cpf) {
+    return res.status(400).json({ message: 'Nome e CPF são obrigatórios.' });
+  }
+
+  const params = {
+    TableName: 'Clientes',
+    Item: {
+      cpf: cpf,
+      nome: nome,
+      criadoEm: new Date().toISOString()
+    }
+  };
+
+  dynamodb.put(params, (err) => {
+    if (err) {
+      console.error('Erro ao inserir no DynamoDB:', err);
+      return res.status(500).json({ message: 'Erro ao cadastrar cliente.' });
+    }
+    res.json({ message: `Cliente ${nome} cadastrado com sucesso!` });
+  });
+});
